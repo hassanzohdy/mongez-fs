@@ -2,7 +2,7 @@
     "name": "@mongez/fs",
     "description": "Synchronous and powerful file system For Nodejs.",
     "main": "src/index.ts",
-    "version": "1.1.4",
+    "version": "1.0.0",
     "dependencies": {
         "fast-folder-size": "^1.7.1",
         "fs-extra": "^10.1.0"
