@@ -11,7 +11,7 @@ import { listFiles } from "./listFiles";
 import { lastModified } from "./lsatModified";
 import { makeDirectory } from "./makeDirectory";
 import { move } from "./move";
-import { put } from "./putFile";
+import { putFile } from "./putFile";
 import { putJson } from "./putJson";
 import { rename } from "./rename";
 import { size } from "./size";
@@ -34,7 +34,7 @@ const fs = {
   size,
   lines,
   makeDirectory,
-  put: put,
+  putFile,
   putJson,
   stats,
 };
