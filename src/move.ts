@@ -1,11 +1,11 @@
-import { moveSync } from "fs-extra";
+import { renameSync } from "fs";
 
 /**
  * Move the given source to new target
  */
-export function move(target: string, destination: string): void {
-  moveSync(target, destination);
+export function movePath(target: string, destination: string): void {
+  renameSync(target, destination);
 }
 
-export const moveDirectory = move;
-export const moveFile = move;
+export const moveDirectory = movePath;
+export const moveFile = movePath;

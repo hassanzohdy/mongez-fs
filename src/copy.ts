@@ -1,11 +1,11 @@
-import { copySync } from "fs-extra";
+import { copyFileSync } from "fs";
 
 /**
  * Copy the given source to the new target
  */
-export function copy(source: string, target: string): void {
-  return copySync(source, target);
+export function copyPath(source: string, target: string): void {
+  return copyFileSync(source, target);
 }
 
-export const copyFile = copy;
-export const copyDirectory = copy;
+export const copyFile = copyPath;
+export const copyDirectory = copyPath;

@@ -1,14 +1,17 @@
-import fsExtra from "fs-extra";
+import { accessSync } from "fs";
 
 /**
  * Determine if the given path exists
  */
-export function exists(path: string) {
-  return fsExtra.existsSync(path);
+export function pathExists(path: string) {
+  try {
+    accessSync(path);
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
 
-export const fileExists = exists;
+export const fileExists = pathExists;
 
-export const directoryExists = exists;
-
-export const pathExists = exists;
+export const directoryExists = pathExists;

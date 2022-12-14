@@ -1,13 +1,21 @@
-import { removeSync } from "fs-extra";
+import { rmSync } from "fs";
 
 /**
  * remove the given path
  */
-export function removeFile(path: string): void {
-  removeSync(path);
+export function removePath(
+  path: string,
+  options: {
+    force?: boolean;
+    recursive?: boolean;
+  } = {
+    force: true,
+    recursive: true,
+  }
+): void {
+  rmSync(path, options);
 }
 
-export const remove = removeFile;
-export const unlink = removeFile;
-export const removeDirectory = removeFile;
-export const rmdir = removeFile;
+export const unlink = removePath;
+export const removeDirectory = removePath;
+export const rmdir = removePath;

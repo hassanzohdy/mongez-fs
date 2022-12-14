@@ -5,7 +5,7 @@ import { stats } from "./stats";
 /**
  * Get size of the given path either file or directory in bytes
  */
-export function size(path: string): number {
+export function pathSize(path: string): number {
   if (isDirectory(path)) {
     return fastFolderSize(path) || 0;
   }
@@ -17,15 +17,15 @@ export function size(path: string): number {
   }
 }
 
-export const fileSize = size;
+export const fileSize = pathSize;
 
-export const directorySize = size;
+export const directorySize = pathSize;
 
 /**
  * Get the size if the given path and convert it to human readable format
  */
 export function humanSize(path: string) {
-  const bytes = size(path);
+  const bytes = pathSize(path);
   const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
 
   if (bytes === 0) {

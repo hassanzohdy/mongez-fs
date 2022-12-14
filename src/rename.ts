@@ -1,11 +1,11 @@
-import { renameSync } from "fs-extra";
+import { renameSync } from "fs";
 
 /**
  * Rename the given path to a new location
  */
-export function rename(target: string, destination: string): void {
+export function renamePath(target: string, destination: string): void {
   renameSync(target, destination);
 }
 
-export const renameFile = rename;
-export const renameDirectory = rename;
+export const renameFile = renamePath;
+export const renameDirectory = renamePath;

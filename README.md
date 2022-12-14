@@ -8,28 +8,32 @@ Mongez FS is a `sync` file system for Nodejs that aims to make working with file
 npm install @mongez/fs
 ```
 
-OR
+Using Yarn
 
 ```bash
 yarn add @mongez/fs
 ```
 
-## Usage
+Using pnpm
 
-The package is very simple to use, just import the function you want.
+```bash
+pnpm add @mongez/fs
+```
+
+## Usage
 
 All methods are sync, so you can use them in your code without callbacks or promises.
 
 ```ts
-import { exists } from '@mongez/fs';
+import { fileExists } from '@mongez/fs';
 ```
 
 Any import can be also taken from the default import as well
 
 ```ts
-import fs from '@mongez/fs';
+import { fileExists } from '@mongez/fs';
 
-if (fs.exists('path/to/file')) {
+if (fileExists('path/to/file')) {
     // do something
 }
 ```
@@ -39,26 +43,44 @@ if (fs.exists('path/to/file')) {
 Copy a file or directory to another location.
 
 ```ts
-import { copy } from '@mongez/fs';
+import { copyPath } from '@mongez/fs';
 
-copy('path/to/file', 'path/to/destination');
+copyPath('path/to/file', 'path/to/destination');
 ```
 
 Alternatively, you can use `copyFile` and `copyDirectory` to copy a file or directory respectively.
 
 ### Check if file or directory exists
 
-Check if a file exists
+Check if a path exists
 
 ```ts
-import { exists } from '@mongez/fs';
+import { pathExists } from '@mongez/fs';
 
-if (exists('path/to/file')) {
+if (pathExists('path/to/file')) {
     // do something
 }
 ```
 
-> `fileExists` `directoryExists` and `pathExists` are alias for `exists`
+Check if a file exists
+
+```ts
+import { fileExists } from '@mongez/fs';
+
+if (fileExists('path/to/file')) {
+    // do something
+}
+```
+
+Check if a directory exists
+
+```ts
+import { directoryExists } from '@mongez/fs';
+
+if (directoryExists('path/to/directory')) {
+    // do something
+}
+```
 
 ### Check if is file
 
@@ -108,6 +130,26 @@ putFile('path/to/file', 'content');
 
 This function will update or create the file if it doesn't exist.
 
+## Append content to file
+
+Append contents to the end of the file.
+
+```ts
+import { appendFile } from '@mongez/fs';
+
+appendFile('path/to/file', 'content');
+```
+
+## Prepend content to file
+
+Prepend contents to the beginning of the file.
+
+```ts
+import { prependFile } from '@mongez/fs';
+
+prependFile('path/to/file', 'content');
+```
+
 ## Get json file content
 
 Get the content of a json file and parse it into an object
@@ -147,36 +189,52 @@ If the file doesn't exist, an empty array will be returned.
 Remove a file or directory
 
 ```ts
-import { remove } from '@mongez/fs';
+import { removePath } from '@mongez/fs';
 
-remove('path/to/file');
+removePath('path/to/file');
 ```
 
-> `removeFile` `unlink` and `unlink` `removeDirectory` are aliases for `remove`
+To remove files you can use `removeFile` or `unlink`
+
+```ts
+import { removeFile, unlink } from '@mongez/fs';
+
+removeFile('path/to/file');
+unlink('path/to/file');
+```
+
+To remove directories you can use `removeDirectory` or `rmdir`
+
+```ts
+import { removeDirectory, rmdir } from '@mongez/fs';
+
+removeDirectory('path/to/directory');
+rmdir('path/to/directory');
+```
 
 ### Rename a file or directory
 
 Rename a file or directory
 
 ```ts
-import { rename } from '@mongez/fs';
+import { renamePath } from '@mongez/fs';
 
-rename('path/to/file', 'path/to/destination');
+renamePath('path/to/file', 'path/to/destination');
 ```
 
-> `renameFile` `renameDirectory` are aliases for `rename`
+> `renameFile` `renameDirectory` are aliases for `renamePath`
 
 ### Move a file or directory
 
 Move a file or directory to another location
 
 ```ts
-import { move } from '@mongez/fs';
+import { movePath } from '@mongez/fs';
 
-move('path/to/file', 'path/to/destination');
+movePath('path/to/file', 'path/to/destination');
 ```
 
-> `moveFile` `moveDirectory` are aliases for `move`
+> `moveFile` `moveDirectory` are aliases for `movePath`
 
 ### Create New Directory
 
@@ -188,9 +246,43 @@ import { makeDirectory } from '@mongez/fs';
 makeDirectory('path/to/directory');
 ```
 
-> `mkdir` `ensureDirectory` and `createDirectory` are aliases for `makeDirectory`
+`mkdir` and `createDirectory` are aliases for `makeDirectory`
 
-> `fileSize` and `directorySize` are aliases for `size`
+> If the directory already exists, it will throw an error.
+
+You can also create a directory recursively
+
+```ts
+import { makeDirectory } from '@mongez/fs';
+
+makeDirectory('path/to/directory', {
+    recursive: true,
+});
+```
+
+> By default `recursive` is set to `true`
+
+To set directory permissions, you can use `mode` option
+
+```ts
+import { makeDirectory } from '@mongez/fs';
+
+makeDirectory('path/to/directory', {
+    mode: 0o777, // this is default mode
+});
+```
+
+## Ensure Directory Exists
+
+If you want to create the directory only if it doesn't exist, you can use `ensureDirectory`
+
+```ts
+import { ensureDirectory } from '@mongez/fs';
+
+ensureDirectory('path/to/directory');
+```
+
+This will create the directory if it doesn't exist, otherwise it will do nothing.
 
 ### Last Modified Time
 
@@ -199,19 +291,49 @@ Get the last modified date of a file or directory
 ```ts
 import { lastModified } from '@mongez/fs';
 
-const lastModified = lastModified('path/to/file');
+const lastModified = lastModified('path/to/file'); // will return a Date object
 ```
 
-> `fileLastModified` and `directoryLastModified` are aliases for `lastModified`
+To get last modified time for file, use `fileLastModified`
+
+```ts
+import { fileLastModified } from '@mongez/fs';
+
+const lastModified = fileLastModified('path/to/file'); // will return a Date object
+```
+
+To get last modified time for directory, use `directoryLastModified`
+
+```ts
+import { directoryLastModified } from '@mongez/fs';
+
+const lastModified = directoryLastModified('path/to/directory'); // will return a Date object
+```
 
 ### File And Directory Size
 
 Get the size of a file or directory in bytes.
 
 ```ts
-import { size } from '@mongez/fs';
+import { pathSize } from '@mongez/fs';
 
-const size = size('path/to/file');
+const size = pathSize('path/to/file');
+```
+
+To get file size, use `fileSize`
+
+```ts
+import { fileSize } from '@mongez/fs';
+
+const size = fileSize('path/to/file');
+```
+
+To get directory size, use `directorySize`
+
+```ts
+import { directorySize } from '@mongez/fs';
+
+const size = directorySize('path/to/directory');
 ```
 
 ### Get file and directory size in human readable format
@@ -266,7 +388,7 @@ It will return an array contains all files and directories in the given path.
 
 ### List files in path
 
-List files in a path
+List files only in a path
 
 ```ts
 import { listFiles } from '@mongez/fs';
@@ -278,7 +400,7 @@ It will return an array contains all files in the given path.
 
 ### List directories in path
 
-List directories in a path
+List directories only in a path
 
 ```ts
 import { listDirectories } from '@mongez/fs';
@@ -287,3 +409,61 @@ const directories = listDirectories('path/to/directory');
 ```
 
 It will return an array contains all directories in the given path.
+
+## Check if path is empty
+
+Check if file is empty
+
+```ts
+import { isEmptyFile } from '@mongez/fs';
+
+const isEmpty = isEmptyFile('path/to/file');
+```
+
+If the file doesn't exist, it will return true.
+
+You can use `isNotEmptyFile` to check if file is not empty
+
+```ts
+import { isNotEmptyFile } from '@mongez/fs';
+
+const isNotEmpty = isNotEmptyFile('path/to/file');
+```
+
+Check if directory is empty
+
+```ts
+import { isEmptyDirectory } from '@mongez/fs';
+
+const isEmpty = isEmptyDirectory('path/to/directory');
+```
+
+If the directory doesn't exist, it will return true.
+
+You can use `isNotEmptyDirectory` to check if directory is not empty
+
+```ts
+import { isNotEmptyDirectory } from '@mongez/fs';
+
+const isNotEmpty = isNotEmptyDirectory('path/to/directory');
+```
+
+## Testing
+
+To run tests, run the following command
+
+```bash
+npm run test
+```
+
+## Change Log
+
+- V2.0.0 (14 Dec 2022)
+  - Added [empty checks](#check-if-path-is-empty) functions.
+  - Added [Append to file](#append-content-to-file) function.
+  - Removed `fs-extra` dependency.
+  - Added Unit tests
+
+## TODO
+
+- [ ] Complete remaining unit tests.

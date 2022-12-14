@@ -1,4 +1,4 @@
-import { readFileSync } from "fs-extra";
+import { readFileSync } from "fs";
 
 /**
  * Get the content of the given file
