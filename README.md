@@ -28,16 +28,6 @@ All methods are sync, so you can use them in your code without callbacks or prom
 import { fileExists } from '@mongez/fs';
 ```
 
-Any import can be also taken from the default import as well
-
-```ts
-import { fileExists } from '@mongez/fs';
-
-if (fileExists('path/to/file')) {
-    // do something
-}
-```
-
 ### Copy file or directory
 
 Copy a file or directory to another location.
@@ -467,3 +457,4 @@ npm run test
 ## TODO
 
 - [ ] Complete remaining unit tests.
+- [ ] Add async functions.
