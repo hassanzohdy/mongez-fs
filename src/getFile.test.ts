@@ -1,27 +1,27 @@
-import * as path from "path";
-import { getFile } from "./getFile";
-import { putFile, touch } from "./putFile";
-import { unlink } from "./remove";
+import { getFile, getFileAsync } from "./getFile";
+import { putFile } from "./putFile";
+import { initTextFile } from "./test-utils";
 
 describe("@mongez/fs/getFile", () => {
-  beforeAll(() => {
-    const filePath = path.join(__dirname, "test.txt");
-
-    touch(filePath);
-  });
+  const filePath = initTextFile();
 
   it("should should return file contents", () => {
-    const filePath = path.join(__dirname, "test.txt");
     const content = "Hello World";
 
     putFile(filePath, content);
 
     expect(getFile(filePath)).toEqual(content);
   });
+});
 
-  afterAll(() => {
-    const filePath = path.join(__dirname, "test.txt");
+describe("@mongez/fs/getFileAsync", () => {
+  const filePath = initTextFile();
 
-    unlink(filePath);
+  it("should should return file contents", async () => {
+    const content = "Hello World";
+
+    putFile(filePath, content);
+
+    expect(await getFileAsync(filePath)).toEqual(content);
   });
 });

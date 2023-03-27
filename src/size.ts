@@ -35,3 +35,22 @@ export function humanSize(path: string) {
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   return `${(bytes / 1024 ** i).toFixed(2)} ${sizes[i]}`;
 }
+
+// async version
+export async function humanSizeAsync(path: string) {
+  return new Promise((resolve) => {
+    resolve(humanSize(path));
+  });
+}
+
+/**
+ * Get the size of the given path async
+ */
+export async function pathSizeAsync(path: string) {
+  return new Promise((resolve) => {
+    resolve(pathSize(path));
+  });
+}
+
+export const fileSizeAsync = pathSizeAsync;
+export const directorySizeAsync = pathSizeAsync;

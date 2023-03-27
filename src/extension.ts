@@ -1,6 +1,8 @@
+import path from "path";
+
 /**
  * Get file extension
  */
-export function extension(path: string): string {
-  return String(path).split(".").pop() || "";
+export function extension(filePath: string): string {
+  return path.extname(filePath);
 }

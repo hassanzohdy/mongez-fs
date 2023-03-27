@@ -21,3 +21,4 @@ export * from "./remove";
 export * from "./rename";
 export * from "./size";
 export * from "./stats";
+export * from "./touch";

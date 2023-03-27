@@ -21,3 +21,21 @@ export function jsonFile(
 }
 
 export const getJsonFile = jsonFile;
+
+/**
+ * Get async the given json file path
+ */
+export async function jsonFileAsync(
+  path: string,
+  reviver?: (this: any, key: string, value: any) => any
+) {
+  try {
+    const content = await getFile(path);
+
+    return JSON.parse(content, reviver);
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const getJsonFileAsync = jsonFileAsync;

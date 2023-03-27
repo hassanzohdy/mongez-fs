@@ -38,3 +38,36 @@ export function isEmptyDirectory(path: string): boolean {
 export function isNotEmptyDirectory(path: string): boolean {
   return !isEmptyDirectory(path);
 }
+
+// Async version
+export async function isEmptyFileAsync(path: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    try {
+      resolve(getFile(path).length === 0);
+    } catch (error) {
+      resolve(true);
+    }
+  });
+}
+
+export async function isNotEmptyFileAsync(path: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    resolve(!isEmptyFile(path));
+  });
+}
+
+export async function isEmptyDirectoryAsync(path: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    try {
+      resolve(list(path).length === 0);
+    } catch (error) {
+      resolve(true);
+    }
+  });
+}
+
+export async function isNotEmptyDirectoryAsync(path: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    resolve(!isEmptyDirectory(path));
+  });
+}

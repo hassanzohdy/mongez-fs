@@ -10,7 +10,7 @@ type WriteOptions = {
  */
 export function putJsonFile(
   path: string,
-  data: unknown,
+  data: any,
   options: WriteOptions = { spaces: 4 }
 ) {
   writeFileSync(
@@ -18,4 +18,18 @@ export function putJsonFile(
     JSON.stringify(data, options.replacer, options.spaces),
     "utf8"
   );
+}
+
+/**
+ * Put async the given object in the given path in json format
+ */
+export async function putJsonFileAsync(
+  path: string,
+  data: any,
+  options: WriteOptions = { spaces: 4 }
+): Promise<void> {
+  return new Promise((resolve) => {
+    putJsonFile(path, data, options);
+    resolve();
+  });
 }
