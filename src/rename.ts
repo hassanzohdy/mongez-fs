@@ -1,4 +1,4 @@
-import { rename, renameSync } from "fs";
+import { promises, renameSync } from "fs";
 
 /**
  * Rename the given path to a new location
@@ -12,19 +12,8 @@ export const renameDirectory = renamePath;
 
 // async version
 
-export async function renamePathAsync(
-  target: string,
-  destination: string
-): Promise<void> {
-  return new Promise((resolve, reject) => {
-    rename(target, destination, (error) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve();
-      }
-    });
-  });
+export async function renamePathAsync(target: string, destination: string) {
+  return promises.rename(target, destination);
 }
 
 export const renameFileAsync = renamePathAsync;

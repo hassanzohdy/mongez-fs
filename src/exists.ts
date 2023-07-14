@@ -1,4 +1,4 @@
-import { access as baseAccess, accessSync } from "fs";
+import { access as baseAccess, accessSync, promises } from "fs";
 import { promisify } from "util";
 
 /**
@@ -21,9 +21,14 @@ export const directoryExists = pathExists;
  * @async Determine if the given path exists
  */
 export async function pathExistsAsync(path: string) {
-  return promisify(baseAccess)(path)
-    .then(() => true)
-    .catch(() => false);
+  return new Promise(async (resolve) => {
+    try {
+      await promises.access(path);
+      resolve(true);
+    } catch (error) {
+      resolve(false);
+    }
+  });
 }
 
 export const fileExistsAsync = pathExistsAsync;

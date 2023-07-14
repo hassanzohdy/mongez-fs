@@ -1,6 +1,8 @@
+import fastFolderSizeAsync from "fast-folder-size";
 import fastFolderSize from "fast-folder-size/sync";
-import { isDirectory } from "./isDirectory";
-import { stats } from "./stats";
+import { isDirectory, isDirectoryAsync } from "./isDirectory";
+import { stats, statsAsync } from "./stats";
+import { ExecException } from "child_process";
 
 /**
  * Get size of the given path either file or directory in bytes
@@ -22,10 +24,44 @@ export const fileSize = pathSize;
 export const directorySize = pathSize;
 
 /**
+ * Get the size of the given path async
+ */
+export async function pathSizeAsync(path: string) {
+  return new Promise<number>(async (resolve, reject) => {
+    try {
+      if (await isDirectoryAsync(path)) {
+        fastFolderSizeAsync(
+          path,
+          (error: ExecException | null, bytes?: number) => {
+            if (error) {
+              reject(error);
+            } else if (bytes) {
+              resolve(bytes);
+            }
+          }
+        );
+      } else {
+        resolve((await statsAsync(path)).size);
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+export const fileSizeAsync = pathSizeAsync;
+export const directorySizeAsync = pathSizeAsync;
+
+/**
  * Get the size if the given path and convert it to human readable format
  */
 export function humanSize(path: string) {
   const bytes = pathSize(path);
+
+  return calculateSize(bytes);
+}
+
+function calculateSize(bytes: number) {
   const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
 
   if (bytes === 0) {
@@ -38,19 +74,13 @@ export function humanSize(path: string) {
 
 // async version
 export async function humanSizeAsync(path: string) {
-  return new Promise((resolve) => {
-    resolve(humanSize(path));
+  return new Promise(async (resolve, reject) => {
+    try {
+      const bytes = await pathSizeAsync(path);
+
+      resolve(calculateSize(bytes));
+    } catch (error) {
+      reject(error);
+    }
   });
 }
-
-/**
- * Get the size of the given path async
- */
-export async function pathSizeAsync(path: string) {
-  return new Promise((resolve) => {
-    resolve(pathSize(path));
-  });
-}
-
-export const fileSizeAsync = pathSizeAsync;
-export const directorySizeAsync = pathSizeAsync;

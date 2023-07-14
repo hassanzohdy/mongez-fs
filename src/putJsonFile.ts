@@ -1,4 +1,4 @@
-import { writeFileSync } from "fs";
+import { writeFileSync, promises } from "fs";
 
 type WriteOptions = {
   spaces?: number | string;
@@ -28,8 +28,17 @@ export async function putJsonFileAsync(
   data: any,
   options: WriteOptions = { spaces: 4 }
 ): Promise<void> {
-  return new Promise((resolve) => {
-    putJsonFile(path, data, options);
-    resolve();
+  return new Promise(async (resolve, reject) => {
+    try {
+      await promises.writeFile(
+        path,
+        JSON.stringify(data, options.replacer, options.spaces),
+        "utf8"
+      );
+
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
   });
 }

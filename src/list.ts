@@ -1,5 +1,4 @@
-import { readdir, readdirSync } from "fs";
-import { promisify } from "util";
+import { promises, readdirSync } from "fs";
 
 /**
  * Get all directories and files in the given path <Non Recursive>
@@ -12,5 +11,5 @@ export function list(path: string) {
  * Get all directories and files in the given path <Non Recursive> async
  */
 export async function listAsync(path: string) {
-  return promisify(readdir)(path);
+  return promises.readdir(path);
 }

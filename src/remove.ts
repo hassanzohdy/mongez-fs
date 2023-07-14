@@ -1,4 +1,4 @@
-import { rmSync } from "fs";
+import { rmSync, promises } from "fs";
 
 /**
  * remove the given path
@@ -32,11 +32,8 @@ export async function removePathAsync(
     force: true,
     recursive: true,
   }
-): Promise<void> {
-  return new Promise((resolve) => {
-    removePath(path, options);
-    resolve();
-  });
+) {
+  return promises.rm(path, options);
 }
 
 export const unlinkAsync = removePathAsync;

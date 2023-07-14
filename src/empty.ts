@@ -1,5 +1,5 @@
-import { getFile } from "./getFile";
-import { list } from "./list";
+import { getFile, getFileAsync } from "./getFile";
+import { list, listAsync } from "./list";
 
 /**
  * Check if the given file path is empty
@@ -41,9 +41,9 @@ export function isNotEmptyDirectory(path: string): boolean {
 
 // Async version
 export async function isEmptyFileAsync(path: string): Promise<boolean> {
-  return new Promise((resolve) => {
+  return new Promise(async (resolve) => {
     try {
-      resolve(getFile(path).length === 0);
+      resolve((await getFileAsync(path)).length === 0);
     } catch (error) {
       resolve(true);
     }
@@ -51,15 +51,13 @@ export async function isEmptyFileAsync(path: string): Promise<boolean> {
 }
 
 export async function isNotEmptyFileAsync(path: string): Promise<boolean> {
-  return new Promise((resolve) => {
-    resolve(!isEmptyFile(path));
-  });
+  return !(await isEmptyFileAsync(path));
 }
 
 export async function isEmptyDirectoryAsync(path: string): Promise<boolean> {
-  return new Promise((resolve) => {
+  return new Promise(async (resolve) => {
     try {
-      resolve(list(path).length === 0);
+      resolve((await listAsync(path)).length === 0);
     } catch (error) {
       resolve(true);
     }
@@ -67,7 +65,5 @@ export async function isEmptyDirectoryAsync(path: string): Promise<boolean> {
 }
 
 export async function isNotEmptyDirectoryAsync(path: string): Promise<boolean> {
-  return new Promise((resolve) => {
-    resolve(!isEmptyDirectory(path));
-  });
+  return !(await isEmptyDirectoryAsync(path));
 }

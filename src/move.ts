@@ -1,4 +1,4 @@
-import { renameSync } from "fs";
+import { renameSync, promises } from "fs";
 
 /**
  * Move the given source to new target
@@ -16,11 +16,8 @@ export const moveFile = movePath;
 export async function movePathAsync(
   target: string,
   destination: string
-): Promise<void> {
-  return new Promise((resolve) => {
-    renameSync(target, destination);
-    resolve();
-  });
+) {
+  return promises.rename(target, destination)
 }
 
 export const moveDirectoryAsync = movePathAsync;

@@ -1,4 +1,5 @@
-import { existsSync, openSync } from "fs";
+import { existsSync, openSync, promises } from "fs";
+import { pathExistsAsync } from "./exists";
 
 /**
  * Touch the given file path
@@ -12,12 +13,16 @@ export function touch(location: string) {
 /**
  * @async Touch the given file path
  */
-export async function touchAsync(path: string): Promise<void> {
-  return new Promise(async (resolve) => {
-    if (existsSync(path)) return resolve();
+export async function touchAsync(path: string) {
+  return new Promise<void>(async (resolve) => {
+    try {
+      if (await pathExistsAsync(path)) return resolve();
 
-    openSync(path, "w");
+      promises.open(path, "w");
 
-    resolve();
+      resolve();
+    } catch (error) {
+      // Do nothing
+    }
   });
 }

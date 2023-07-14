@@ -1,5 +1,4 @@
-import { stat, Stats, statSync } from "fs";
-import { promisify } from "util";
+import { promises, Stats, statSync } from "fs";
 
 const cachedPaths: Record<string, Stats> = {};
 
@@ -27,7 +26,7 @@ export async function statsAsync(path: string, cache = true): Promise<Stats> {
         return;
       }
 
-      const stats = await promisify(stat)(path);
+      const stats = await promises.stat(path);
 
       cachedPaths[path] = stats;
 

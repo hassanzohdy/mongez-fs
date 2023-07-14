@@ -1,4 +1,4 @@
-import { getFile } from "./getFile";
+import { getFile, getFileAsync } from "./getFile";
 
 /**
  * Load the given json file path
@@ -30,7 +30,7 @@ export async function jsonFileAsync(
   reviver?: (this: any, key: string, value: any) => any
 ) {
   try {
-    const content = await getFile(path);
+    const content = await getFileAsync(path);
 
     return JSON.parse(content, reviver);
   } catch (error) {

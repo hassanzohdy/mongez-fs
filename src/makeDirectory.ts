@@ -1,5 +1,5 @@
 import { MakeDirectoryOptions, mkdir as baseMkdir, mkdirSync } from "fs";
-import { directoryExists } from "./exists";
+import { directoryExists, directoryExistsAsync } from "./exists";
 
 /**
  * Create new directory if the given path does not exist
@@ -10,19 +10,16 @@ export function makeDirectory(
     mode: 0o777,
     recursive: true,
   }
-): void {
-  mkdirSync(path, options);
+) {
+  return mkdirSync(path, options);
 }
 
 export const mkdir = makeDirectory;
 export const createDirectory = makeDirectory;
 
-export function ensureDirectory(
-  path: string,
-  options?: MakeDirectoryOptions
-): void {
+export function ensureDirectory(path: string, options?: MakeDirectoryOptions) {
   if (!directoryExists(path)) {
-    makeDirectory(path, options);
+    return makeDirectory(path, options);
   }
 }
 
@@ -50,10 +47,11 @@ export async function ensureDirectoryAsync(
   path: string,
   options?: MakeDirectoryOptions
 ): Promise<void> {
-  return new Promise((resolve) => {
-    if (!directoryExists(path)) {
-      makeDirectory(path, options);
+  return new Promise(async (resolve) => {
+    if (!(await directoryExistsAsync(path))) {
+      await makeDirectoryAsync(path, options);
     }
+
     resolve();
   });
 }

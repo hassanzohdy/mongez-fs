@@ -18,11 +18,13 @@ export const directoryLastModified = lastModified;
  * Get last modified time of the given path async
  */
 export async function lastModifiedAsync(path: string): Promise<Date> {
-  try {
-    return (await statsAsync(path)).mtime;
-  } catch (e) {
-    return new Date();
-  }
+  return new Promise(async (resolve, reject) => {
+    try {
+      resolve((await statsAsync(path)).mtime);
+    } catch (e) {
+      reject(e);
+    }
+  });
 }
 
 export const fileLastModifiedAsync = lastModifiedAsync;

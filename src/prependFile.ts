@@ -35,7 +35,7 @@ export async function prependFileAsync(
 
       resolve(true);
     } catch (error) {
-      resolve(error);
+      reject(error);
     }
   });
 }

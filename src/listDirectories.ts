@@ -12,6 +12,12 @@ export function listDirectories(path: string) {
  * Get all directories in the given path <Non Recursive> async
  */
 export async function listDirectoriesAsync(path: string) {
-  const files = await listAsync(path);
-  return files.filter((innerPath) => isDirectory(path + "/" + innerPath));
+  return new Promise(async (resolve, reject) => {
+    try {
+      const files = await listAsync(path);
+      resolve(files.filter((innerPath) => isDirectory(path + "/" + innerPath)));
+    } catch (error) {
+      reject(error);
+    }
+  });
 }

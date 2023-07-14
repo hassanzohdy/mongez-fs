@@ -1,5 +1,4 @@
-import { writeFile, WriteFileOptions, writeFileSync } from "fs";
-import { promisify } from "util";
+import { WriteFileOptions, writeFileSync, promises } from "fs";
 
 /**
  * Put the given content into the given file path
@@ -20,5 +19,12 @@ export async function putFileAsync(
   content: string | number | boolean,
   options: WriteFileOptions = "utf8"
 ) {
-  return promisify(writeFile)(path, String(content), options);
+  return new Promise<void>(async (resolve, reject) => {
+    try {
+      await promises.writeFile(path, String(content), options);
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
 }

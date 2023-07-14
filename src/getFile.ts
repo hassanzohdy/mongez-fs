@@ -1,5 +1,4 @@
-import { readFile, readFileSync } from "fs";
-import { promisify } from "util";
+import { readFileSync, promises } from "fs";
 
 /**
  * Get the content of the given file
@@ -12,5 +11,11 @@ export function getFile(path: string): string {
  * @async Get the content of the given file
  */
 export async function getFileAsync(path: string): Promise<string> {
-  return promisify(readFile)(path).then((data) => data.toString());
+  return new Promise(async (resolve, reject) => {
+    try {
+      resolve(await promises.readFile(path, "utf8"));
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
