@@ -1,5 +1,3 @@
-import fastFolderSizeAsync from "fast-folder-size";
-import fastFolderSize from "fast-folder-size/sync";
 import { isDirectory, isDirectoryAsync } from "./isDirectory";
 import { stats, statsAsync } from "./stats";
 import { ExecException } from "child_process";
@@ -11,7 +9,7 @@ import fs from "fs";
  */
 export function pathSize(path: string): number {
   if (isDirectory(path)) {
-    return fastFolderSize(path) || 0;
+    return directorySize(path) || 0;
   }
 
   try {
@@ -53,7 +51,7 @@ export async function pathSizeAsync(path: string) {
   return new Promise<number>(async (resolve, reject) => {
     try {
       if (await isDirectoryAsync(path)) {
-        fastFolderSizeAsync(
+        directorySizeAsync(
           path,
           (error: ExecException | null, bytes?: number) => {
             if (error) {
