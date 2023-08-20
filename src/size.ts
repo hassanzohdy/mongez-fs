@@ -3,6 +3,8 @@ import fastFolderSize from "fast-folder-size/sync";
 import { isDirectory, isDirectoryAsync } from "./isDirectory";
 import { stats, statsAsync } from "./stats";
 import { ExecException } from "child_process";
+import path from "path";
+import fs from "fs";
 
 /**
  * Get size of the given path either file or directory in bytes
@@ -21,7 +23,28 @@ export function pathSize(path: string): number {
 
 export const fileSize = pathSize;
 
-export const directorySize = pathSize;
+export function directorySize(folderPath: string) {
+  let totalSize = 0;
+
+  try {
+    const files = fs.readdirSync(folderPath);
+
+    for (const file of files) {
+      const filePath = path.join(folderPath, file);
+      const stats = fs.statSync(filePath);
+
+      if (stats.isFile()) {
+        totalSize += stats.size;
+      } else if (stats.isDirectory()) {
+        totalSize += directorySize(filePath);
+      }
+    }
+
+    return totalSize;
+  } catch (error) {
+    throw error;
+  }
+}
 
 /**
  * Get the size of the given path async
@@ -50,7 +73,28 @@ export async function pathSizeAsync(path: string) {
 }
 
 export const fileSizeAsync = pathSizeAsync;
-export const directorySizeAsync = pathSizeAsync;
+export async function directorySizeAsync(folderPath: string) {
+  let totalSize = 0;
+
+  try {
+    const files = await fs.promises.readdir(folderPath);
+
+    for (const file of files) {
+      const filePath = path.join(folderPath, file);
+      const stats = await fs.promises.stat(filePath);
+
+      if (stats.isFile()) {
+        totalSize += stats.size;
+      } else if (stats.isDirectory()) {
+        totalSize += await directorySizeAsync(filePath);
+      }
+    }
+
+    return totalSize;
+  } catch (error) {
+    throw error;
+  }
+}
 
 /**
  * Get the size if the given path and convert it to human readable format
