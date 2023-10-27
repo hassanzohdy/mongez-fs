@@ -313,7 +313,9 @@ const content = await getJsonFileAsync('path/to/file.json'); // will return an o
 
 ## Put json to file
 
-Put content in a json file
+Put content in a json file.
+
+You can store objects or arrays directly in a json file.
 
 ```ts
 import { putJsonFile } from '@mongez/fs';
