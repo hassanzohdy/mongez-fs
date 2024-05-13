@@ -2,7 +2,7 @@
     "name": "@mongez/fs",
     "description": "Synchronous and powerful file system For Nodejs.",
     "main": "src/index.ts",
-    "version": "3.0.4",
+    "version": "3.0.5",
     "scripts": {
         "test": "jest ./src",
         "test:coverage": "jest ./src --coverage",
